@@ -1,24 +1,5 @@
 ﻿<h2>Appliances</h2>
 
-@if (error()) {
-  <div class="alert alert-danger">{{ error() }}</div>
-}
-
-<form class="row g-2 mb-4" (ngSubmit)="onAdd()">
-  <div class="col-md-5">
-    <input type="text" class="form-control" name="name" placeholder="Name" [(ngModel)]="newName" required />
-  </div>
-  <div class="col-md-3">
-    <select class="form-select" name="status" [(ngModel)]="newStatus">
-      <option value="On">On</option>
-      <option value="Off">Off</option>
-    </select>
-  </div>
-  <div class="col-md-4">
-    <button type="submit" class="btn btn-primary" [disabled]="!newName().trim()">Add</button>
-  </div>
-</form>
-
 <button class="btn btn-success mb-3 me-2" [disabled]="!allowed()" (click)="onSwitchOnAll()">
   Switch on all
 </button>
@@ -26,10 +7,19 @@
   Switch off all
 </button>
 
-<ul class="list-group">
-  @for (a of appareils(); track a._id) {
-    <app-appareil [appareil]="a" (switched)="onSwitch($event)" (removed)="onDelete($event)" />
-  } @empty {
-    <li class="list-group-item">No appliances yet</li>
-  }
-</ul>
+@if (loading()) {
+  <p>Chargement…</p>
+} @else if (appareilList().length === 0) {
+  <p class="text-muted">Aucun appareil.</p>
+} @else {
+  <ul class="list-group">
+    @for (a of appareilList(); track a._id) {
+      <app-appareil
+        [appareilId]="a._id"
+        [appareilName]="a.name"
+        [appareilStatus]="a.status"
+        (changed)="load()"
+      />
+    }
+  </ul>
+}

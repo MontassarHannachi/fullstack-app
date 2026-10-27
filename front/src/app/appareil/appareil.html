@@ -3,18 +3,19 @@
     <div class="card-body">
       <h5
         class="card-title"
-        [class.text-success]="appareil().status === 'On'"
-        [class.text-danger]="appareil().status === 'Off'"
+        [class.text-success]="appareilStatus() === 'On'"
+        [class.text-danger]="appareilStatus() === 'Off'"
       >
-        {{ appareil().name }} - {{ appareil().status }}
+        {{ appareilName() }} - {{ appareilStatus() }}
       </h5>
-      @if (appareil().status === 'Off') {
-        <button class="btn btn-success btn-sm" (click)="switched.emit(appareil())">Switch on</button>
+      <input type="text" class="form-control mb-2" [(ngModel)]="appareilName" />
+      @if (appareilStatus() === 'Off') {
+        <button class="btn btn-success btn-sm" (click)="onSwitch()">Switch on</button>
       } @else {
-        <button class="btn btn-danger btn-sm" (click)="switched.emit(appareil())">Switch off</button>
+        <button class="btn btn-danger btn-sm" (click)="onSwitch()">Switch off</button>
       }
-      <a class="btn btn-outline-primary btn-sm ms-2" [routerLink]="['/appareils', appareil()._id]">Detail</a>
-      <button class="btn btn-outline-danger btn-sm ms-2" (click)="removed.emit(appareil())">Delete</button>
+      <a class="btn btn-outline-primary btn-sm ms-2"
+         [routerLink]="['/appareils', appareilId()]">Detail</a>
     </div>
   </div>
 </li>

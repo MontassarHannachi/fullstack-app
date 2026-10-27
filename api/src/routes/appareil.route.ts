@@ -1,7 +1,7 @@
 ﻿import { Router } from "express";
 import { Appareil } from "../models/appareil.model.js";
 import { validate } from "../middlewares/validate.js";
-import { appareilBody, idParam, listQuery, switchAllBody } from "../schemas/appareil.js";
+import { appareilBody, appareilPatch, idParam, listQuery, switchAllBody } from "../schemas/appareil.js";
 
 export const appareilRouter = Router();
 
@@ -31,7 +31,7 @@ appareilRouter.post("/", validate(appareilBody), async (_req, res) => {
 });
 
 // UPDATE
-appareilRouter.put("/:id", validate(idParam, "params"), validate(appareilBody), async (_req, res) => {
+appareilRouter.put("/:id", validate(idParam, "params"), validate(appareilPatch), async (_req, res) => {
   const appareil = await Appareil.findByIdAndUpdate(res.locals.params.id, res.locals.body, {
     returnDocument: "after",
     runValidators: true,

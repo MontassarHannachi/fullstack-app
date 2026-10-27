@@ -1,35 +1,48 @@
 ﻿import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { Appareil } from '../models/appareil.model';
+
+export interface Appareil {
+  _id: string;
+  name: string;
+  status: 'On' | 'Off';
+}
 
 @Injectable({ providedIn: 'root' })
 export class AppareilService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
+  private readonly baseUrl = 'http://localhost:3001/api/appareils';
 
-  getAppareils(): Observable<Appareil[]> {
-    return this.http.get<Appareil[]>(this.apiUrl);
+  list(status?: 'On' | 'Off'): Observable<Appareil[]> {
+    const url = status ? `${this.baseUrl}?status=${status}` : this.baseUrl;
+    return this.http.get<Appareil[]>(url);
   }
 
-  getAppareil(id: string): Observable<Appareil> {
-    return this.http.get<Appareil>(`${this.apiUrl}/${id}`);
+  getById(id: string): Observable<Appareil> {
+    return this.http.get<Appareil>(`${this.baseUrl}/${id}`);
   }
 
-  addAppareil(appareil: Omit<Appareil, '_id'>): Observable<Appareil> {
-    return this.http.post<Appareil>(this.apiUrl, appareil);
+  create(name: string, status: 'On' | 'Off' = 'Off'): Observable<Appareil> {
+    return this.http.post<Appareil>(this.baseUrl, { name, status });
   }
 
-  updateAppareil(id: string, appareil: Omit<Appareil, '_id'>): Observable<Appareil> {
-    return this.http.put<Appareil>(`${this.apiUrl}/${id}`, appareil);
+  update(id: string, patch: Partial<Pick<Appareil, 'name' | 'status'>>): Observable<Appareil> {
+    return this.http.put<Appareil>(`${this.baseUrl}/${id}`, patch);
   }
 
-  deleteAppareil(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  remove(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  switchAll(status: 'On' | 'Off'): Observable<{ modified: number }> {
-    return this.http.patch<{ modified: number }>(`${this.apiUrl}/switch-all`, { status });
+  switchOn(id: string): Observable<Appareil> {
+    return this.update(id, { status: 'On' });
+  }
+
+  switchOff(id: string): Observable<Appareil> {
+    return this.update(id, { status: 'Off' });
+  }
+
+  switchAll(status: 'On' | 'Off'): Observable<unknown> {
+    return this.http.patch(`${this.baseUrl}/switch-all`, { status });
   }
 }
