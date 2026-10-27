@@ -1,0 +1,36 @@
+﻿@baseUrl = http://localhost:3001/api/appareils
+
+### List all appliances
+GET {{baseUrl}}
+
+### Create an appliance
+# @name create
+POST {{baseUrl}}
+Content-Type: application/json
+
+{ "name": "Dishwasher", "status": "Off" }
+
+### Read one
+@id = {{create.response.body._id}}
+GET {{baseUrl}}/{{id}}
+
+### Update
+PUT {{baseUrl}}/{{id}}
+Content-Type: application/json
+
+{ "name": "Dishwasher", "status": "On" }
+
+### Invalid body (400)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{ "name": "", "status": "Maybe" }
+
+### Unknown id (404)
+GET {{baseUrl}}/000000000000000000000000
+
+### Malformed id (400)
+GET {{baseUrl}}/abc
+
+### Delete
+DELETE {{baseUrl}}/{{id}}
