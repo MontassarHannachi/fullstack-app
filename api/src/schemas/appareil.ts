@@ -12,3 +12,7 @@ export const idParam = z.object({
 });
 
 export const switchAllBody = appareilBody.pick({ status: true });
+
+export const listQuery = z.object({
+  status: z.enum(["On", "Off"]).optional(),
+});
