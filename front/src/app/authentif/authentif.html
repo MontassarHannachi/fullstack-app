@@ -10,6 +10,11 @@
       <label class="form-label">Mot de passe</label>
       <input type="password" class="form-control" [(ngModel)]="password" name="password" required />
     </div>
+    
+    @if (error) {
+      <div class="alert alert-danger py-1">{{ error }}</div>
+    }
+    
     <button type="submit" class="btn btn-primary" [disabled]="!email || !password">
       Se connecter
     </button>

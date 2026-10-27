@@ -1,9 +1,29 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
+import { signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  isAuth = signal(false);
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private apiUrl = 'http://localhost:3001/api/auth';
 
-  signIn()  { this.isAuth.set(true); }
-  signOut() { this.isAuth.set(false); }
+  isAuth = signal(!!localStorage.getItem('token'));
+
+  login(email: string, password: string) {
+    return this.http.post<{ token: string; email: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap((response) => {
+        localStorage.setItem('token', response.token);
+        this.isAuth.set(true);
+      })
+    );
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.isAuth.set(false);
+    this.router.navigate(['/login']);
+  }
 }

@@ -11,19 +11,26 @@ import { AuthService } from '../services/auth';
 })
 export class Authentif {
   private router = inject(Router);
-  readonly auth = inject(AuthService);   // public → utilisable dans le template
+  readonly auth = inject(AuthService);
 
   email = '';
   password = '';
+  error = '';
 
   onSignIn() {
     if (!this.email || !this.password) return;
-    this.auth.signIn();
-    this.router.navigate(['/appareils']);
+
+    this.auth.login(this.email, this.password).subscribe({
+      next: () => {
+        this.router.navigate(['/appareils']);
+      },
+      error: (err) => {
+        this.error = err.error?.error || 'Erreur de connexion';
+      }
+    });
   }
 
   onSignOut() {
-    this.auth.signOut();
-    this.router.navigate(['/home']);
+    this.auth.logout();
   }
 }
