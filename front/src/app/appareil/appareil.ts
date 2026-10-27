@@ -1,10 +1,11 @@
 ﻿import { Component, inject, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AppareilService } from '../services/appareil.service';
 
 @Component({
   selector: 'app-appareil',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './appareil.html',
   styleUrl: './appareil.css',
 })
@@ -23,3 +24,4 @@ export class Appareil {
     }
   }
 }
+

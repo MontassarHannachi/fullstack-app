@@ -1,0 +1,14 @@
+﻿<h2>Appliances</h2>
+
+<button class="btn btn-success mb-3 me-2" [disabled]="!allowed()" (click)="onSwitchOnAll()">
+  Switch on all
+</button>
+<button class="btn btn-danger mb-3" [disabled]="!allowed()" (click)="onSwitchOffAll()">
+  Switch off all
+</button>
+
+<ul class="list-group">
+  @for (a of appareilList; track a.name; let i = $index) {
+    <app-appareil [appareilName]="a.name" [appareilStatus]="a.status" [index]="i" />
+  }
+</ul>

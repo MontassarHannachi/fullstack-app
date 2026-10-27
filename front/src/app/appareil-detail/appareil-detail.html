@@ -1,0 +1,18 @@
+﻿@if (appareil(); as a) {
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">{{ a.name }}</h3>
+      <p
+        class="card-text"
+        [class.text-success]="a.status === 'On'"
+        [class.text-danger]="a.status === 'Off'"
+      >
+        Status: {{ a.status }}
+      </p>
+      <a class="btn btn-warning" routerLink="/appareils">Back</a>
+    </div>
+  </div>
+} @else {
+  <div class="alert alert-warning">Appliance not found</div>
+  <a class="btn btn-warning" routerLink="/appareils">Back</a>
+}
