@@ -1,2 +1,20 @@
-﻿<h2>Login</h2>
-<p>Login page (authentication will come later).</p>
+﻿<h2>Connexion</h2>
+
+@if (!auth.isAuth()) {
+  <form (submit)="onSignIn(); $event.preventDefault()" class="mt-3" style="max-width: 400px;">
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" [(ngModel)]="email" name="email" required />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Mot de passe</label>
+      <input type="password" class="form-control" [(ngModel)]="password" name="password" required />
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="!email || !password">
+      Se connecter
+    </button>
+  </form>
+} @else {
+  <p class="text-success mt-3">✅ Vous êtes connecté.</p>
+  <button class="btn btn-danger" (click)="onSignOut()">Se déconnecter</button>
+}
