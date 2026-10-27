@@ -9,7 +9,11 @@
         {{ appareilName() }} - {{ appareilStatus() }}
       </h5>
       <input type="text" class="form-control mb-2" [(ngModel)]="appareilName" />
-      <button class="btn btn-success btn-sm">Switch on</button>
+      @if (appareilStatus() === 'Off') {
+        <button class="btn btn-success btn-sm" (click)="onSwitch()">Switch on</button>
+      } @else {
+        <button class="btn btn-danger btn-sm" (click)="onSwitch()">Switch off</button>
+      }
     </div>
   </div>
 </li>
