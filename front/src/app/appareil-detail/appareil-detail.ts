@@ -1,5 +1,7 @@
 ﻿import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { catchError, of, switchMap } from 'rxjs';
+import { Appareil } from '../models/appareil.model';
 import { AppareilService } from '../services/appareil.service';
 
 @Component({
@@ -10,40 +12,21 @@ import { AppareilService } from '../services/appareil.service';
 })
 export class AppareilDetail {
   private route = inject(ActivatedRoute);
-  private appareilService = inject(AppareilService);
+  private service = inject(AppareilService);
 
-  appareil = signal<{ name: string; status: string } | null>(null);
-  currentIndex: number | null = null;
+  appareil = signal<Appareil | null>(null);
+  loading = signal(true);
 
   constructor() {
-    this.route.paramMap.subscribe((params) => {
-      const index = Number(params.get('id'));
-      this.currentIndex = Number.isInteger(index) ? index : null;
-      const found = this.currentIndex !== null
-        ? this.appareilService.appareilList[this.currentIndex]
-        : undefined;
-      this.appareil.set(found ? { ...found } : null);
-    });
-  }
-
-  onSwitchOn() {
-    if (this.currentIndex !== null) {
-      this.appareilService.switchOnOne(this.currentIndex);
-      this.refresh();
-    }
-  }
-
-  onSwitchOff() {
-    if (this.currentIndex !== null) {
-      this.appareilService.switchOffOne(this.currentIndex);
-      this.refresh();
-    }
-  }
-
-  private refresh() {
-    if (this.currentIndex !== null) {
-      const a = this.appareilService.appareilList[this.currentIndex];
-      this.appareil.set(a ? { ...a } : null);   // clone → le signal voit le changement
-    }
+    this.route.paramMap
+      .pipe(
+        switchMap((params) =>
+          this.service.getAppareil(params.get('id') ?? '').pipe(catchError(() => of(null)))
+        )
+      )
+      .subscribe((a) => {
+        this.appareil.set(a);
+        this.loading.set(false);
+      });
   }
 }

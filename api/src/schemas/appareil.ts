@@ -10,3 +10,5 @@ export const appareilPatch = appareilBody.partial();
 export const idParam = z.object({
   id: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid id"),
 });
+
+export const switchAllBody = appareilBody.pick({ status: true });

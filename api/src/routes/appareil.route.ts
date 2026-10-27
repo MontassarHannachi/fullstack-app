@@ -1,13 +1,19 @@
 ﻿import { Router } from "express";
 import { Appareil } from "../models/appareil.model.js";
 import { validate } from "../middlewares/validate.js";
-import { appareilBody, idParam } from "../schemas/appareil.js";
+import { appareilBody, idParam, switchAllBody } from "../schemas/appareil.js";
 
 export const appareilRouter = Router();
 
 // READ all
 appareilRouter.get("/", async (_req, res) => {
   res.status(200).json(await Appareil.find());
+});
+
+// SWITCH ALL (declared before "/:id")
+appareilRouter.patch("/switch-all", validate(switchAllBody), async (_req, res) => {
+  const result = await Appareil.updateMany({}, { status: res.locals.body.status });
+  res.status(200).json({ modified: result.modifiedCount });
 });
 
 // READ one
@@ -39,3 +45,4 @@ appareilRouter.delete("/:id", validate(idParam, "params"), async (_req, res) => 
   if (result.deletedCount === 0) return res.status(404).json({ error: "Appareil not found" });
   res.status(204).end();
 });
+

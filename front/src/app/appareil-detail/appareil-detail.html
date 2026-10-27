@@ -1,4 +1,6 @@
-﻿@if (appareil(); as a) {
+﻿@if (loading()) {
+  <p>Loading...</p>
+} @else if (appareil(); as a) {
   <div class="card">
     <div class="card-body">
       <h3 class="card-title">{{ a.name }}</h3>
@@ -9,21 +11,6 @@
       >
         Status: {{ a.status }}
       </p>
-
-      <button
-        class="btn btn-success me-2"
-        [disabled]="a.status === 'On'"
-        (click)="onSwitchOn()"
-      >
-        Switch On
-      </button>
-      <button
-        class="btn btn-danger me-2"
-        [disabled]="a.status === 'Off'"
-        (click)="onSwitchOff()"
-      >
-        Switch Off
-      </button>
       <a class="btn btn-warning" routerLink="/appareils">Back</a>
     </div>
   </div>
