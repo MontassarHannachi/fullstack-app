@@ -11,8 +11,7 @@ export interface Appareil {
 @Injectable({ providedIn: 'root' })
 export class AppareilService {
   private http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:3001/api/appareils';
-
+private readonly baseUrl = 'https://fullstack-app-12lt.onrender.com/api/appareils';
   list(status?: 'On' | 'Off'): Observable<Appareil[]> {
     const url = status ? `${this.baseUrl}?status=${status}` : this.baseUrl;
     return this.http.get<Appareil[]>(url);
