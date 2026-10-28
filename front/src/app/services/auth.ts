@@ -1,3 +1,4 @@
+import { environment } from '../../environments/environment';
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -8,7 +9,7 @@ import { signal } from '@angular/core';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-private apiUrl = 'https://fullstack-app-1-nosz.onrender.com/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   isAuth = signal(!!localStorage.getItem('token'));
 
   login(email: string, password: string) {

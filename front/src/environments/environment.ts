@@ -1,4 +1,3 @@
 ﻿export const environment = {
-  apiUrl: 'http://localhost:3001/api/appareils',
+  apiUrl: 'https://fullstack-app-1-nosz.onrender.com/api',
 };
-

@@ -1,18 +1,27 @@
-﻿<h2>Appliances</h2>
+﻿
+<h2 class="mb-4">Appareils électroménagers</h2>
 
-<button class="btn btn-success mb-3 me-2" [disabled]="!allowed()" (click)="onSwitchOnAll()">
-  Switch on all
-</button>
-<button class="btn btn-danger mb-3" [disabled]="!allowed()" (click)="onSwitchOffAll()">
-  Switch off all
-</button>
+<div class="appareil-grid">  <button
+    class="btn btn-success me-2"
+    [disabled]="!allowed()"
+    (click)="onSwitchOnAll()">
+    Allumer tous
+  </button>
+
+  <button
+    class="btn btn-danger"
+    [disabled]="!allowed()"
+    (click)="onSwitchOffAll()">
+    Éteindre tous
+  </button>
+</div>
 
 @if (loading()) {
-  <p>Chargement…</p>
+  <p>Chargement des appareils...</p>
 } @else if (appareilList().length === 0) {
   <p class="text-muted">Aucun appareil.</p>
 } @else {
-  <ul class="list-group">
+  <div class="appareil-grid">
     @for (a of appareilList(); track a._id) {
       <app-appareil
         [appareilId]="a._id"
@@ -21,5 +30,5 @@
         (changed)="load()"
       />
     }
-  </ul>
+  </div>
 }
