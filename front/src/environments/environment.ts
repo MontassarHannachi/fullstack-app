@@ -1,3 +1,3 @@
 ﻿export const environment = {
-  apiUrl: 'https://fullstack-app-1-nosz.onrender.com/api',
+  apiUrl: 'https://fullstack-app-l2lt.onrender.com/api',
 };
