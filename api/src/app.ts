@@ -10,7 +10,7 @@ export const app = express();
 
 app.use(morgan("dev"));
 app.use(helmet());
-app.use(cors({ origin: "http://localhost:4200" }));
+app.use(cors({ origin: (process.env.CORS_ORIGIN ?? "http://localhost:4200").split(",") }));
 app.use(express.json());
 
 app.get("/api/health", (_req, res) => {
