@@ -8,7 +8,7 @@ import { signal } from '@angular/core';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-private apiUrl = 'https://fullstack-app-12lt.onrender.com/api/auth';
+private apiUrl = 'https://fullstack-app-1-nosz.onrender.com/api/auth';
   isAuth = signal(!!localStorage.getItem('token'));
 
   login(email: string, password: string) {
