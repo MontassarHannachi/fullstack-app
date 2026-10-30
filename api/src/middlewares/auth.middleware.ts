@@ -9,7 +9,10 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   }
 
   const token = authHeader.split(" ")[1];
-  const secret = process.env.JWT_SECRET || "secret_par_defaut";
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    return res.status(500).json({ error: "Configuration serveur invalide." });
+  }
 
   try {
     const decoded = jwt.verify(token, secret);

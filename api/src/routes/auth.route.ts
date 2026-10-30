@@ -38,7 +38,10 @@ authRouter.post("/login", validate(authBody), async (_req, res) => {
   }
 
   // On génère le token (valide 24h)
-  const secret = process.env.JWT_SECRET || "secret_par_defaut";
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    return res.status(500).json({ error: "Configuration serveur invalide." });
+  }
   const token = jwt.sign({ userId: user._id, email: user.email }, secret, { expiresIn: "24h" });
 
   res.status(200).json({ token, email: user.email });
